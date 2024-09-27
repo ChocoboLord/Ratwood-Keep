@@ -9,12 +9,14 @@
 	allowed_races = RACES_TOLERATED_UP
 	allowed_patrons = ALL_CLERIC_PATRONS
 	outfit = /datum/outfit/job/roguetown/templar
-	min_pq = 2
+	min_pq = null
 	max_pq = null
 	total_positions = 3
 	spawn_positions = 3
 	display_order = JDO_TEMPLAR
 	give_bank_account = TRUE
+
+	cmode_music = 'sound/music/combat_clergy.ogg'
 
 /datum/outfit/job/roguetown/templar
 	allowed_patrons = ALL_CLERIC_PATRONS

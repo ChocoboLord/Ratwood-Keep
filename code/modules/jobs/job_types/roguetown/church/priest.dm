@@ -19,8 +19,10 @@
 
 	display_order = JDO_PRIEST
 	give_bank_account = 115
-	min_pq = 8
+	min_pq = null
 	max_pq = null
+
+	cmode_music = 'sound/music/combat_clergy.ogg'
 
 /datum/outfit/job/roguetown/priest
 	allowed_patrons = list(/datum/patron/divine/astrata)
