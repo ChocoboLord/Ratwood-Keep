@@ -22,8 +22,6 @@
 	min_pq = 8
 	max_pq = null
 
-	cmode_music = 'sound/music/combat_clergy.ogg'
-
 /datum/outfit/job/roguetown/priest
 	allowed_patrons = list(/datum/patron/divine/astrata)
 
