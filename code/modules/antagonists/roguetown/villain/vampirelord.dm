@@ -26,6 +26,7 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 	var/vamplevel = 0
 	var/vitae = 1000
 	var/vmax = 2000
+	var/vamphumanity = 500
 	var/obj/structure/vampire/bloodpool/mypool
 	var/last_transform
 	var/cache_skin
@@ -79,7 +80,7 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 		QDEL_NULL(eyes)
 	eyes = new /obj/item/organ/eyes/night_vision/zombie
 	eyes.Insert(owner.current)
-	owner.current.AddSpell(new /obj/effect/proc_holder/spell/targeted/transfix)
+	//owner.current.AddSpell(new /obj/effect/proc_holder/spell/targeted/transfix)
 	owner.current.verbs |= /mob/living/carbon/human/proc/vamp_regenerate
 	owner.current.verbs |= /mob/living/carbon/human/proc/vampire_telepathy
 	vamp_look()
@@ -452,8 +453,8 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 				S.unlocked = TRUE
 			owner.current.verbs |= /mob/living/carbon/human/proc/blood_strength
 			owner.current.verbs |= /mob/living/carbon/human/proc/blood_celerity
-			owner.current.RemoveSpell(/obj/effect/proc_holder/spell/targeted/transfix)
-			owner.current.AddSpell(new /obj/effect/proc_holder/spell/targeted/transfix/master)
+			//owner.current.RemoveSpell(/obj/effect/proc_holder/spell/targeted/transfix)
+			//owner.current.AddSpell(new /obj/effect/proc_holder/spell/targeted/transfix/master)
 			for(var/S in MOBSTATS)
 				owner.current.change_stat(S, 2)
 			for(var/obj/structure/vampire/bloodpool/B in GLOB.vampire_objects)
@@ -475,7 +476,7 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 
 // SPAWN
 /datum/antagonist/vampirelord/lesser
-	name = "Vampire Spawn"
+	name = "Lesser Vampire"
 	antag_hud_name = "Vspawn"
 	confess_lines = list(
 		"THE CRIMSON CALLS!", 
@@ -528,6 +529,7 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 	for(var/mob/dead/observer/rogue/arcaneeye/A in GLOB.mob_list)
 		to_chat(A, span_boldnotice("A message from [src.real_name]:[msg]"))
 
+
 /mob/living/carbon/human/proc/punish_spawn()
 	set name = "Punish Minion"
 	set category = "VAMPIRE"
@@ -551,20 +553,38 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 		return
 	switch(punishment)
 		if("Pain")
-			to_chat(choice, span_boldnotice("You are wracked with pain as your master punishes you!"))
-			choice.apply_damage(30, BRUTE)
-			choice.emote_scream()
-			playsound(choice, 'sound/misc/obey.ogg', 100, FALSE, pressure_affected = FALSE)
-		if("Pause")
-			to_chat(choice, span_boldnotice("Your body is frozen in place as your master punishes you!"))
-			choice.Paralyze(300)
-			choice.emote_scream()
-			playsound(choice, 'sound/misc/obey.ogg', 100, FALSE, pressure_affected = FALSE)
-		if("DESTROY")
-			to_chat(choice, span_boldnotice("You feel only darkness. Your master no longer has use of you."))
-			spawn(10 SECONDS)
+			if(choice.special_role == "Death Knight")
+				to_chat(choice, span_boldnotice("You are wracked with pain as your master punishes you!"))
+				choice.apply_damage(30, BRUTE)
 				choice.emote_scream()
-				choice.dust()
+				playsound(choice, 'sound/misc/obey.ogg', 100, FALSE, pressure_affected = FALSE)
+			else
+				to_chat(choice, span_boldnotice("You are wracked with pain as [src] overpowers your soul!"))
+				choice.apply_damage(15, BRUTE)
+				choice.emote_scream()
+				playsound(choice, 'sound/misc/obey.ogg', 100, FALSE, pressure_affected = FALSE)
+		if("Pause")
+			if(choice.special_role == "Death Knight")
+				to_chat(choice, span_boldnotice("Your body is frozen in place as your master punishes you!"))
+				choice.Paralyze(300)
+				choice.emote_scream()
+				playsound(choice, 'sound/misc/obey.ogg', 100, FALSE, pressure_affected = FALSE)
+			else
+				to_chat(choice, span_boldnotice("Your body is frozen in place as [src] overpowers your mind!"))
+				choice.Paralyze(150)
+				choice.emote_scream()
+				playsound(choice, 'sound/misc/obey.ogg', 100, FALSE, pressure_affected = FALSE)
+		if("DESTROY")
+			if(choice.special_role == "Death Knight")
+				to_chat(choice, span_boldnotice("You feel only darkness. Your master no longer has use of you."))
+				spawn(10 SECONDS)
+					choice.emote_scream()
+					choice.dust()
+			else
+				to_chat(src, span_boldnotice("You are unable to destroy [choice]'s body and soul, but you are able to inflict some pain..."))
+				choice.apply_damage(30, BRUTE)
+				choice.emote_scream()
+				playsound(choice, 'sound/misc/obey.ogg', 100, FALSE, pressure_affected = FALSE)
 	visible_message(span_danger("[src] reaches out, gripping [choice]'s soul, inflicting punishment!"))
 
 /obj/structure/vampire/portal/Crossed(atom/movable/AM)
@@ -1273,8 +1293,8 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 
 	Moved(oldloc, direct)
 
-// Spells
-/obj/effect/proc_holder/spell/targeted/transfix
+// Spells - Disabled for now until transfix can be better rebalanced
+/* /obj/effect/proc_holder/spell/targeted/transfix
 	name = "Transfix"
 	overlay_state = "transfix"
 	releasedrain = 100
@@ -1415,4 +1435,4 @@ GLOBAL_LIST_EMPTY(vampire_objects)
 					L.Slowdown(50)
 					sleep(50)
 					L.Sleeping(300)
-
+*/
