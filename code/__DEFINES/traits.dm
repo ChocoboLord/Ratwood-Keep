@@ -1,4 +1,4 @@
-// ROGUETRAITS (description when rmb skills button)
+// ROGUETRAITS (description when right-clicking [skill] button)
 #define TRAIT_WEBWALK "Webwalker"
 #define TRAIT_NOSTINK "Dead Nose"
 #define TRAIT_ZJUMP "High Jumping"

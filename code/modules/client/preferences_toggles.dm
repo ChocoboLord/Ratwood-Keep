@@ -29,17 +29,6 @@
 		prefs.toggles ^= TOGGLE_FULLSCREEN
 		toggle_fullscreeny(prefs.toggles & TOGGLE_FULLSCREEN)
 
-/client/verb/toggle_screenshake()
-	set name = "Toggle Screen Shake"
-	set category = "Options"
-	set desc = ""
-	if(prefs)
-		prefs.shake = !prefs.shake
-		if(prefs.shake)
-			to_chat(src, "Screen shake enabled")
-		else
-			to_chat(scr, "Screen shake disabled")
-
 /client/verb/stop_sounds_rogue()
 	set name = "StopSounds"
 	set category = "Options"
@@ -513,3 +502,14 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 		return
 	prefs.asaycolor = initial(prefs.asaycolor)
 	prefs.save_preferences()
+
+/client/proc/togglebluehighlight()
+	set name = "Toggle Blue OOC"
+	set desc = ""
+	set category = "Prefs - Admin"
+	if(!holder)
+		return
+	prefs.toggles ^= TOGGLE_BLUE_OOC
+	prefs.save_preferences()
+	to_chat(usr, "You will [(prefs.toggles & TOGGLE_BLUE_OOC) ? "now" : "no longer"] send OOC messages with blue-colored text.")
+	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Blue OOC", "[usr.client.prefs.toggles & TOGGLE_BLUE_OOC ? "Enabled" : "Disabled"]"))

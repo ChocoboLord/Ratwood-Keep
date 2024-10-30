@@ -36,13 +36,16 @@ SUBSYSTEM_DEF(role_class_handler)
 		CTAG_ALLCLASS = list(every single class datum that exists outside of the parent)
 */
 	var/list/sorted_class_categories = list()
-	// Whether bandits have been injected in the game
+	/// Whether bandits have been injected in the game
 	var/bandits_in_round = FALSE
 
-	// Assoc list of class registers to keep track of what townies and migrant parties are and message listeners
+	/// Assoc list of class registers to keep track of what townies and migrant parties are and message listeners
 	var/list/class_registers = list()
 
 
+/*
+	We init and build the silly lists
+*/
 /datum/controller/subsystem/role_class_handler/Initialize()
 	build_dumbass_category_lists()
 
@@ -162,8 +165,8 @@ SUBSYSTEM_DEF(role_class_handler)
 
 	if(!(target_datum.maximum_possible_slots == -1)) // Is the class not set to infinite?
 		if((target_datum.total_slots_occupied >= target_datum.maximum_possible_slots)) // We just hit a cap, iterate all the class handlers and inform them.
-			for(var/class_handler in class_select_handlers)
-				var/datum/class_select_handler/found_menu = class_select_handlers[class_handler]
+			for(var/CUCKS in class_select_handlers) //class_handler
+				var/datum/class_select_handler/found_menu = class_select_handlers[CUCKS] //class_handler
 
 				if(target_datum in found_menu.rolled_classes) // We found the target datum in one of the classes they rolled aka in the list of options they got visible,
 					found_menu.rolled_class_is_full(target_datum) //  inform the datum of its error.

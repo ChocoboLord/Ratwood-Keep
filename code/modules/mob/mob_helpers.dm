@@ -266,9 +266,7 @@
 
 ///Shake the camera of the person viewing the mob SO REAL!
 /proc/shake_camera(mob/M, duration, strength=1)
-	if(!M || !M.client || !M.client.prefs || duration < 1)
-		return
-	if(!M.client.prefs.shake)
+	if(!M || !M.client || duration < 1)
 		return
 	var/client/C = M.client
 	var/oldx = C.pixel_x
@@ -304,7 +302,7 @@
 /**
   * change a mob's act-intent.
   *
-  * Input the intent as a string such as "help" or use "right"/"left
+  * Input the intent as a /datum/intent, or the strings "left" or "right"
   */
 /mob/verb/a_intent_change(input as text)
 	set name = "a-intent"

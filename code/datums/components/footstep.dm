@@ -107,7 +107,7 @@
 	if(H.shoes || feetCover) //are we wearing shoes
 		//SANITY CHECK, WILL NOT PLAY A SOUND IF THE LIST IS INVALID
 		if(!GLOB.footstep[T.footstep] || (LAZYLEN(GLOB.footstep[T.footstep]) < 3))
-		CRASH("Invalid footstep value. Turf type: [T.type]; Value: [T.footstep]")
+			CRASH("Invalid footstep value. Turf type: [T.type]; Value: [T.footstep]")
 			return
 		used_footsteps = GLOB.footstep[T.footstep][1]
 		used_footsteps = used_footsteps.Copy()
@@ -125,7 +125,7 @@
 	else
 		//SANITY CHECK, WILL NOT PLAY A SOUND IF THE LIST IS INVALID
 		if(!GLOB.barefootstep[T.barefootstep] || (LAZYLEN(GLOB.barefootstep[T.barefootstep]) < 3))
-		CRASH("Invalid barefootstep value given. Turf type: [T.type]; Value: [T.barefootstep]")
+			CRASH("Invalid barefootstep value given. Turf type: [T.type]; Value: [T.barefootstep]")
 			return
 		used_footsteps = GLOB.barefootstep[T.barefootstep][1]
 		used_footsteps = used_footsteps.Copy()
