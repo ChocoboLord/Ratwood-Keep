@@ -194,7 +194,7 @@
 	layer = ABOVE_MOB_LAYER
 
 /obj/structure/fluff/railing/Initialize()
-	..()
+	. = ..()
 	var/lay = getwlayer(dir)
 	if(lay)
 		layer = lay
@@ -316,12 +316,14 @@
 	climb_offset = 6
 
 /obj/structure/fluff/railing/fence/Initialize()
-	..()
+	. = ..()
 	smooth_fences()
 
 /obj/structure/fluff/railing/fence/Destroy()
-	..()
-	smooth_fences()
+	for(var/obj/structure/fluff/railing/fence/F in orange(1))
+		if(F.dir == dir)
+			F.smooth_fences(TRUE)
+	return ..()
 
 /obj/structure/fluff/railing/fence/OnCrafted(dirin)
 	. = ..()
@@ -550,7 +552,7 @@
 /obj/structure/fluff/clock/Destroy()
 	if(soundloop)
 		soundloop.stop()
-	..()
+	return ..()
 
 /obj/structure/fluff/clock/obj_break(damage_flag)
 	if(!broke)
@@ -614,7 +616,7 @@
 /obj/structure/fluff/wallclock/Destroy()
 	if(soundloop)
 		soundloop.stop()
-	..()
+	return ..()
 
 /obj/structure/fluff/wallclock/examine(mob/user)
 	. = ..()
@@ -1003,7 +1005,7 @@
 							I += /obj/item/reagent_containers/powder/moondust
 							I += /obj/item/bomb
 						if(7)
-							I += /obj/item/clothing/shoes/roguetown/boots/armor
+							I += /obj/item/clothing/shoes/roguetown/armor/steel
 						if(8)
 							I += /obj/item/clothing/gloves/roguetown/plate
 						if(9)
@@ -1187,7 +1189,7 @@
 
 /obj/structure/fluff/psycross/copper/Destroy()
 	addomen("psycross")
-	..()
+	return ..()
 
 /obj/structure/fluff/psycross/proc/AOE_flash(mob/user, range = 15, power = 5, targeted = FALSE)
 	var/list/mob/targets = get_flash_targets(get_turf(src), range, FALSE)

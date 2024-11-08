@@ -19,7 +19,7 @@
 	load_sound = 'sound/foley/nockarrow.ogg'
 	fire_sound = 'sound/combat/Ranged/crossbow-small-shot-02.ogg'
 	associated_skill = /datum/skill/combat/crossbows
-	anvilrepair = /datum/skill/craft/weaponsmithing
+	anvilrepair = /datum/skill/craft/blacksmithing
 	smeltresult = /obj/item/ingot/steel
 	var/damfactor = 2
 
@@ -111,7 +111,7 @@
 		var/obj/projectile/BB = CB.BB
 		BB.damage = BB.damage * damfactor
 		if(HAS_TRAIT(user, TRAIT_TINY))
-			BB.damage = (BB.damage * 0.3)
+			BB.damage = (BB.damage * 0.1)
 	cocked = FALSE
 	..()
 

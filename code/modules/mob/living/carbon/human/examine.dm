@@ -5,7 +5,7 @@
 		user.mind.i_know_person(src)
 	var/datum/species/self_species = dna.species
 	var/datum/species/examiner_species = user.dna.species
-	if(self_species.stress_examine && self_species.type != examiner_species.type && !HAS_TRAIT(user, TRAIT_TOLERANT))
+	if(self_species.stress_examine && self_species.type != examiner_species.type)
 		var/event_type = /datum/stressevent/shunned_race
 		if(HAS_TRAIT(user, TRAIT_XENOPHOBIC))
 			event_type = /datum/stressevent/shunned_race_xenophobic
@@ -90,7 +90,7 @@
 			var/skin_tone_wording = dna.species.skin_tone_wording ? lowertext(dna.species.skin_tone_wording) : "skin tone"
 			var/list/skin_tones = dna.species.get_skin_list()
 			var/skin_tone_seen = "incomprehensible"
-			if(!HAS_TRAIT(src, TRAIT_ROTMAN) && skin_tone)
+			if(skin_tone)
 				//AGGHHHHH this is stupid
 				for(var/tone in skin_tones)
 					if(src.skin_tone == skin_tones[tone])
@@ -120,6 +120,18 @@
 
 		if(name in GLOB.heretical_players)
 			. += span_userdanger("HERETIC'S BRAND! SHAME!")
+		if(iszizocultist(user) || iszizolackey(user))
+			if(virginity)
+				. += "<span class='userdanger'>VIRGIN!</span>"
+
+		if(real_name in GLOB.outlawed_players)
+			. += "<span class='userdanger'>OUTLAW!</span>"
+		if(mind && mind.special_role)
+		else
+			if(mind && mind.special_role == "Bandit")
+				. += "<span class='userdanger'>BANDIT!</span>"
+			if(mind && mind.special_role == "Vampire Lord")
+				. += "<span class='userdanger'>A MONSTER!</span>"
 
 		if(name in GLOB.outlawed_players)
 			. += span_userdanger("OUTLAW!")
@@ -467,6 +479,13 @@
 
 	if(length(msg))
 		. += span_warning("[msg.Join("\n")]")
+
+	// Show especially large embedded objects at a glance
+	for(var/obj/item/bodypart/part in bodyparts)
+		if (LAZYLEN(part.embedded_objects))
+			for(var/obj/item/stuck_thing in part.embedded_objects)
+				if (stuck_thing.w_class >= WEIGHT_CLASS_SMALL)
+					. += span_bloody("<b>[m3] \a [stuck_thing] stuck in [m2] [part.name]!</b>")
 
 	if((user != src) && isliving(user))
 		var/mob/living/L = user

@@ -77,7 +77,7 @@
 	wrists = /obj/item/clothing/wrists/roguetown/bracers/leather
 	shirt = /obj/item/clothing/suit/roguetown/shirt/shortshirt/bog
 	pants = /obj/item/clothing/under/roguetown/trou/leather
-	shoes = /obj/item/clothing/shoes/roguetown/boots/leather
+	shoes = /obj/item/clothing/shoes/roguetown/armor/leather
 	beltl = /obj/item/keyring/bog_guard
 	belt = /obj/item/storage/belt/rogue/leather
 
@@ -117,8 +117,9 @@
 	bogger.mind.adjust_skillrank(/datum/skill/misc/climbing, 2, TRUE)
 	bogger.mind.adjust_skillrank(/datum/skill/misc/sneaking, 2, TRUE)
 	bogger.mind.adjust_skillrank(/datum/skill/misc/swimming, 2, TRUE)
-	bogger.mind.adjust_skillrank(/datum/skill/misc/medicine, 1, TRUE)
+	bogger.mind.adjust_skillrank(/datum/skill/misc/treatment, 1, TRUE)
 	bogger.mind.adjust_skillrank(/datum/skill/misc/riding, 3, TRUE)
+	bogger.mind.adjust_skillrank(/datum/skill/misc/reading, 1, TRUE)
 	bogger.change_stat("strength", 2)
 	bogger.change_stat("perception", 2)
 	bogger.change_stat("constitution", 1)
@@ -140,7 +141,8 @@
 	bogger.mind.adjust_skillrank(/datum/skill/misc/athletics, 3, TRUE)
 	bogger.mind.adjust_skillrank(/datum/skill/misc/climbing, 3, TRUE)
 	bogger.mind.adjust_skillrank(/datum/skill/misc/swimming, 2, TRUE)
-	bogger.mind.adjust_skillrank(/datum/skill/misc/medicine, 1, TRUE)
+	bogger.mind.adjust_skillrank(/datum/skill/misc/treatment, 1, TRUE)
+	bogger.mind.adjust_skillrank(/datum/skill/misc/reading, 1, TRUE)
 	bogger.change_stat("strength", 1)
 	bogger.change_stat("perception", 3)
 	bogger.change_stat("speed", 2)
