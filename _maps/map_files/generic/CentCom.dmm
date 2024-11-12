@@ -778,7 +778,6 @@
 /turf/open/floor/rogue/herringbone,
 /area/rogue/indoors)
 "bL" = (
-/obj/structure/vampire/portalmaker,
 /turf/open/floor/rogue/hexstone,
 /area/rogue/indoors)
 "bM" = (
@@ -920,9 +919,6 @@
 /turf/open/floor/carpet/inn,
 /area/rogue/indoors)
 "ck" = (
-/obj/structure/vampire/bloodpool{
-	pixel_x = -18
-	},
 /turf/open/floor/rogue/ruinedwood{
 	icon_state = "weird1"
 	},
@@ -962,9 +958,6 @@
 /turf/open/floor/carpet/inn,
 /area/rogue/indoors)
 "cs" = (
-/obj/structure/vampire/scryingorb{
-	pixel_x = -16
-	},
 /turf/open/floor/rogue/ruinedwood{
 	icon_state = "weird1"
 	},
@@ -1184,7 +1177,6 @@
 /area/rogue/indoors)
 "de" = (
 /obj/machinery/light/rogue/torchholder/c,
-/obj/effect/landmark/start/vampireknight,
 /turf/open/floor/rogue/blocks,
 /area/rogue/indoors)
 "df" = (
@@ -1192,9 +1184,6 @@
 	dir = 1;
 	icon_state = "longtable"
 	},
-/obj/item/roguekey/vampire,
-/obj/item/roguekey/vampire,
-/obj/item/roguekey/vampire,
 /turf/open/floor/rogue/woodturned,
 /area/rogue/indoors)
 "dg" = (
@@ -1716,7 +1705,6 @@
 /turf/open/floor/rogue/dirt,
 /area/rogue/outdoors)
 "pA" = (
-/obj/effect/landmark/vteleportsending,
 /obj/machinery/light/rogue/wallfire/candle/blue/l,
 /turf/open/floor/rogue/hexstone,
 /area/rogue/indoors)
@@ -1748,10 +1736,6 @@
 /turf/open/floor/rogue/wood,
 /area/rogue/indoors)
 "qj" = (
-/obj/structure/vampire/necromanticbook{
-	pixel_x = -16;
-	pixel_y = -11
-	},
 /turf/open/floor/rogue/ruinedwood{
 	icon_state = "weird1"
 	},
@@ -1830,10 +1814,6 @@
 /turf/open/floor/rogue/herringbone,
 /area/rogue/indoors)
 "sk" = (
-/obj/structure/fluff/traveltile/vampire{
-	aportalgoesto = "vampexit";
-	aportalid = "vampin"
-	},
 /turf/open/floor/rogue/dirt/road,
 /area/rogue/outdoors/woods)
 "so" = (
@@ -2060,7 +2040,6 @@
 /turf/closed/mineral/rogue/bedrock,
 /area/rogue/outdoors/woods)
 "CM" = (
-/obj/effect/landmark/vteleport,
 /obj/machinery/light/rogue/wallfire/candle/blue/r,
 /turf/open/floor/rogue/hexstone,
 /area/rogue/indoors)
@@ -2410,7 +2389,6 @@
 /turf/open/floor/rogue/dirt,
 /area/rogue/outdoors/woods)
 "Tf" = (
-/obj/effect/landmark/start/vampirespawn,
 /turf/open/floor/rogue/blocks/paving,
 /area/rogue/indoors)
 "Tw" = (
@@ -2555,7 +2533,6 @@
 /turf/open/floor/rogue/dirt/road,
 /area/rogue/indoors)
 "Ym" = (
-/obj/effect/landmark/start/vampirelord,
 /turf/open/floor/carpet/inn,
 /area/rogue/indoors)
 "Yt" = (

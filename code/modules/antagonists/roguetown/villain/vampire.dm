@@ -16,30 +16,31 @@
 	antag_hud_name = "vampire"
 	confess_lines = list(
 		"I WANT YOUR BLOOD!", 
-		"DRINK THE BLOOD!", 
-		"CHILD OF KAIN!",
+		"WE ARE THE LAND!", 
+		"FOR THE GOD-HEAD!",
 	)
 	var/disguised = TRUE
 	var/vitae = 1000
+	var/vmax = 2000
+	var/starved = FALSE
 	var/last_transform
 	var/is_lesser = FALSE
 	var/cache_skin
 	var/cache_eyes
 	var/cache_hair
-	var/obj/effect/proc_holder/spell/targeted/shapeshift/bat/batform //attached to the datum itself to avoid cloning memes, and other duplicates
 
 /datum/antagonist/vampire/examine_friendorfoe(datum/antagonist/examined_datum,mob/examiner,mob/examined)
 	if(istype(examined_datum, /datum/antagonist/vampire/lesser))
-		return span_boldnotice("A child of Kain.")
+		return span_boldnotice("A newly sired childe.")
 	if(istype(examined_datum, /datum/antagonist/vampire))
-		return span_boldnotice("An elder Kin.")
+		return span_boldnotice("A fellow vampyre.")
 	if(examiner.Adjacent(examined))
 		if(istype(examined_datum, /datum/antagonist/werewolf/lesser))
 			if(!disguised)
-				return span_boldwarning("I sense a lesser Werewolf.")
+				return span_boldwarning("A lesser werevolf.")
 		if(istype(examined_datum, /datum/antagonist/werewolf))
 			if(!disguised)
-				return span_boldwarning("THIS IS AN ELDER WEREWOLF! MY ENEMY!")
+				return span_boldwarning("An elder werevolf. I should be careful.")
 	if(istype(examined_datum, /datum/antagonist/zombie))
 		return span_boldnotice("Another deadite.")
 	if(istype(examined_datum, /datum/antagonist/skeleton))
@@ -47,6 +48,11 @@
 
 /datum/antagonist/vampire/lesser //le shitcode faec
 	name = "Lesser Vampire"
+	confess_lines = list(
+		"I NEVER ASKED FOR THIS CURSE!", 
+		"THE THIRST!", 
+		"I MUST FEED!",
+	)
 	is_lesser = TRUE
 	increase_votepwr = FALSE
 
@@ -54,10 +60,6 @@
 	return
 
 /datum/antagonist/vampire/on_gain()
-	if(!is_lesser)
-		owner.adjust_skillrank(/datum/skill/combat/wrestling, 6, TRUE)
-		owner.adjust_skillrank(/datum/skill/combat/unarmed, 6, TRUE)
-		ADD_TRAIT(owner.current, TRAIT_NOBLE, TRAIT_GENERIC)
 	owner.special_role = name
 	ADD_TRAIT(owner.current, TRAIT_STRONGBITE, TRAIT_GENERIC)
 	ADD_TRAIT(owner.current, TRAIT_NOROGSTAM, TRAIT_GENERIC)
@@ -66,8 +68,6 @@
 	ADD_TRAIT(owner.current, TRAIT_NOPAIN, TRAIT_GENERIC)
 	ADD_TRAIT(owner.current, TRAIT_TOXIMMUNE, TRAIT_GENERIC)
 	ADD_TRAIT(owner.current, TRAIT_STEELHEARTED, TRAIT_GENERIC)
-	ADD_TRAIT(owner.current, TRAIT_TOLERANT, TRAIT_GENERIC)
-	ADD_TRAIT(owner.current, TRAIT_LIMPDICK, TRAIT_GENERIC)
 	owner.current.cmode_music = 'sound/music/combat_vamp2.ogg'
 	var/obj/item/organ/eyes/eyes = owner.current.getorganslot(ORGAN_SLOT_EYES)
 	if(eyes)
@@ -78,10 +78,6 @@
 	if(increase_votepwr)
 		forge_vampire_objectives()
 	finalize_vampire()
-//	if(!is_lesser)
-//		if(isnull(batform))
-//			batform = new
-//			owner.current.AddSpell(batform)
 	owner.current.verbs |= /mob/living/carbon/human/proc/disguise_button
 	owner.current.verbs |= /mob/living/carbon/human/proc/vamp_regenerate
 	if(!is_lesser)
@@ -95,9 +91,6 @@
 	if(!silent && owner.current)
 		to_chat(owner.current,span_danger("I am no longer a [job_rank]!"))
 	owner.special_role = null
-	if(!isnull(batform))
-		owner.current.RemoveSpell(batform)
-		QDEL_NULL(batform)
 	return ..()
 
 /datum/antagonist/vampire/proc/add_objective(datum/objective/O)
@@ -114,7 +107,7 @@
 		return
 
 /datum/antagonist/vampire/greet()
-	to_chat(owner.current, span_userdanger("Ever since that bite, I have been a VAMPIRE."))
+	to_chat(owner.current, span_userdanger("I am a vampyre, servant of the God-Head Zizo. I must remain alive for Her return."))
 	owner.announce_objectives()
 	..()
 
@@ -164,11 +157,35 @@
 				H.vampire_undisguise(src)
 		vitae -= 1
 
+/datum/antagonist/vampire/proc/handle_vitae(change)
+	var/tempcurrent = vitae
+	if(is_lesser)
+		if(change > 0)
+			tempcurrent += change
+			if(tempcurrent > vmax)
+				tempcurrent = vmax // to prevent overflow
+		if(change < 0)
+			tempcurrent += change
+			if(tempcurrent < 0)
+				tempcurrent = 0 // to prevent excessive negative.
+		vitae = tempcurrent
+	if(vitae <= 20)
+		if(!starved)
+			to_chat(owner, span_userdanger("I starve, my power dwindles! I am so weak!"))
+			starved = TRUE
+			for(var/S in MOBSTATS)
+				owner.current.change_stat(S, -5)
+	else
+		if(starved)
+			starved = FALSE
+			for(var/S in MOBSTATS)
+				owner.current.change_stat(S, 5)
+
 /mob/living/carbon/human/proc/disguise_button()
 	set name = "Disguise"
 	set category = "VAMPIRE"
 
-	var/datum/antagonist/vampirelord/VD = mind.has_antag_datum(/datum/antagonist/vampirelord)
+	var/datum/antagonist/vampire/VD = mind.has_antag_datum(/datum/antagonist/vampire)
 	if(!VD)
 		return
 	if(world.time < VD.last_transform + 30 SECONDS)
@@ -185,7 +202,7 @@
 		VD.last_transform = world.time
 		vampire_disguise(VD)
 
-/mob/living/carbon/human/proc/vampire_disguise(datum/antagonist/vampirelord/VD)
+/mob/living/carbon/human/proc/vampire_disguise(datum/antagonist/vampire/VD)
 	if(!VD)
 		return
 	VD.disguised = TRUE
@@ -198,7 +215,7 @@
 	update_body_parts(redraw = TRUE)
 	to_chat(src, span_notice("My true form is hidden."))
 
-/mob/living/carbon/human/proc/vampire_undisguise(datum/antagonist/vampirelord/VD)
+/mob/living/carbon/human/proc/vampire_undisguise(datum/antagonist/vampire/VD)
 	if(!VD)
 		return
 	VD.disguised = FALSE
@@ -219,7 +236,7 @@
 	set name = "Night Muscles"
 	set category = "VAMPIRE"
 
-	var/datum/antagonist/vampirelord/VD = mind.has_antag_datum(/datum/antagonist/vampirelord)
+	var/datum/antagonist/vampire/VD = mind.has_antag_datum(/datum/antagonist/vampire)
 	if(!VD)
 		return
 	if(VD.disguised)
@@ -251,7 +268,7 @@
 	set name = "Quickening"
 	set category = "VAMPIRE"
 
-	var/datum/antagonist/vampirelord/VD = mind.has_antag_datum(/datum/antagonist/vampirelord)
+	var/datum/antagonist/vampire/VD = mind.has_antag_datum(/datum/antagonist/vampire)
 	if(!VD)
 		return
 	if(VD.disguised)
@@ -349,7 +366,7 @@
 	for(var/datum/status_effect/debuff/silver_curse/silver_curse in status_effects)
 		silver_curse_status = TRUE
 		break
-	var/datum/antagonist/vampirelord/VD = mind.has_antag_datum(/datum/antagonist/vampirelord)
+	var/datum/antagonist/vampire/VD = mind.has_antag_datum(/datum/antagonist/vampire)
 	if(!VD)
 		return
 	if(VD.disguised)

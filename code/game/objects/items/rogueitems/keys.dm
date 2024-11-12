@@ -160,14 +160,6 @@
 	icon_state = "brownkey"
 	lockid = "roomhunt"
 
-//vampire mansion//
-/obj/item/roguekey/vampire
-	name = "mansion key"
-	desc = "The key to a vampire lord's castle."
-	icon_state = "vampkey"
-	lockid = "mansionvampire"
-//
-
 /obj/item/roguekey/blacksmith
 	name = "blacksmith key"
 	desc = "This key opens a blacksmith's workshop."

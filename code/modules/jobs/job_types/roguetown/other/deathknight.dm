@@ -107,7 +107,7 @@
 
 	H.ambushable = FALSE
 
-	var/datum/antagonist/new_antag = new /datum/antagonist/skeleton/knight()
+	var/datum/antagonist/new_antag = new /datum/antagonist/skeleton/()
 	H.mind.add_antag_datum(new_antag)
 
 /obj/item/clothing/suit/roguetown/armor/plate/blkknight/death

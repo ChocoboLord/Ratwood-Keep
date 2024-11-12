@@ -39,8 +39,6 @@
 			return
 		if(G.client)
 			if(G.client.holder)
-				if(istype(G, /mob/dead/observer/rogue/arcaneeye))
-					return
 				if(alert("Travel with the boatman?", "", "Yes", "No") == "Yes")
 
 					// Check if the player's job is hiv+

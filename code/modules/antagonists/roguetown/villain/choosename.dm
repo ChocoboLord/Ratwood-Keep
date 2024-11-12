@@ -24,11 +24,6 @@
 			to_chat(src, "<font color='red'>Invalid name. Your name should be at least 2 and at most [MAX_NAME_LEN] characters long. It may only contain the characters A-Z, a-z, -, ' and .</font>")
 			return
 	GLOB.chosen_names += real_name
-	if(mind.special_role == "Vampire Lord")
-		if(gender == FEMALE)
-			real_name = "Lady [real_name]"
-		if(gender == MALE)
-			real_name = "Lord [real_name]"
 	mind.name = real_name
 	var/fakekey = ckey
 	if(ckey in GLOB.anonymize)

@@ -411,7 +411,7 @@
 			if(role in player.client.prefs.be_special)
 				candidates += player.mind				// Get a list of all the people who want to be the antagonist for this round
 				continue
-			if(role == ROLE_NBEAST)
+			if(role == ROLE_VAMPIRE)
 				if(prob(1))
 					candidates += player.mind
 

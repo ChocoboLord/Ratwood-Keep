@@ -27,12 +27,12 @@
 	if(istype(examined_datum, /datum/antagonist/werewolf))
 		return span_boldnotice("An elder lupine kin.")
 	if(examiner.Adjacent(examined))
-		if(istype(examined_datum, /datum/antagonist/vampirelord/lesser))
+		if(istype(examined_datum, /datum/antagonist/vampire/lesser))
 			if(transformed)
 				return span_boldwarning("A lesser Vampire.")
-		if(istype(examined_datum, /datum/antagonist/vampirelord))
+		if(istype(examined_datum, /datum/antagonist/vampire))
 			if(transformed)
-				return span_boldwarning("An Ancient Vampire. I must be careful!")
+				return span_boldwarning("An elder vampire. I should be careful.")
 
 /datum/antagonist/werewolf/on_gain()
 	owner.special_role = name
@@ -69,7 +69,7 @@
 /mob/living/carbon/human/proc/can_werewolf()
 	if(!mind)
 		return FALSE
-	if(mind.has_antag_datum(/datum/antagonist/vampirelord))
+	if(mind.has_antag_datum(/datum/antagonist/vampire))
 		return FALSE
 	if(mind.has_antag_datum(/datum/antagonist/werewolf))
 		return FALSE
@@ -105,7 +105,7 @@
 		if(target.mind.has_antag_datum(/datum/antagonist/zombie))
 			to_chat(src, span_warning("I should not feed on rotten flesh."))
 			return
-		if(target.mind.has_antag_datum(/datum/antagonist/vampirelord))
+		if(target.mind.has_antag_datum(/datum/antagonist/vampire))
 			to_chat(src, span_warning("I should not feed on corrupted flesh."))
 			return
 		if(target.mind.has_antag_datum(/datum/antagonist/werewolf))

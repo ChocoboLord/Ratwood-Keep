@@ -398,7 +398,7 @@ var/global/list/roguegamemodes = list("Rebellion", "Vampires and Werewolves", "E
 	"Bog Master",
 	"Knight"
 	)
-	antag_candidates = get_players_for_role(ROLE_NBEAST)
+	antag_candidates = get_players_for_role(ROLE_VAMPIRE)
 	antag_candidates = shuffle(antag_candidates)
 	for(var/datum/mind/vampire in antag_candidates)
 		if(!vampsremaining)
@@ -513,19 +513,11 @@ var/global/list/roguegamemodes = list("Rebellion", "Vampires and Werewolves", "E
 
 ///////////////// VAMPIRES
 	pre_vampires = shuffle(pre_vampires)
-	var/vamplordpicked = FALSE
 	for(var/datum/mind/vampire in pre_vampires)
-		if(!vamplordpicked)
-			var/datum/antagonist/new_antag = new /datum/antagonist/vampirelord()
-			addtimer(CALLBACK(vampire, TYPE_PROC_REF(/datum/mind, add_antag_datum), new_antag), rand(10,100))
-			GLOB.pre_setup_antags -= vampire
-			vampires += vampire
-			vamplordpicked = TRUE
-		else
-			var/datum/antagonist/new_antag = new /datum/antagonist/vampirelord/lesser()
-			addtimer(CALLBACK(vampire, TYPE_PROC_REF(/datum/mind, add_antag_datum), new_antag), rand(10,100))
-			GLOB.pre_setup_antags -= vampire
-			vampires += vampire
+		var/datum/antagonist/new_antag = new /datum/antagonist/vampire()
+		addtimer(CALLBACK(vampire, TYPE_PROC_REF(/datum/mind, add_antag_datum), new_antag), rand(10,100))
+		GLOB.pre_setup_antags -= vampire
+		vampires += vampire
 ///////////////// BANDIT
 	for(var/datum/mind/bandito in pre_bandits)
 		var/datum/antagonist/new_antag = new /datum/antagonist/bandit()

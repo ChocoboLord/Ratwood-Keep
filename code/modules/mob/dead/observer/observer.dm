@@ -128,8 +128,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 		/mob/dead/observer/proc/open_spawners_menu,
 		/mob/dead/observer/proc/tray_view)
 
-	if(!(istype(src, /mob/dead/observer/rogue/arcaneeye)))
-		client?.verbs += GLOB.ghost_verbs
 
 	if(icon_state in GLOB.ghost_forms_with_directions_list)
 		ghostimage_default = image(src.icon,src,src.icon_state + "")
@@ -238,8 +236,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 
 /mob/dead/observer/Login()
 	. = ..()
-	if(!(istype(src, /mob/dead/observer/rogue/arcaneeye)))
-		client?.verbs += GLOB.ghost_verbs
 
 /mob/dead/observer/get_photo_description(obj/item/camera/camera)
 	if(!invisibility || camera.see_ghosts)
@@ -273,8 +269,6 @@ GLOBAL_VAR_INIT(observer_default_invisibility, INVISIBILITY_OBSERVER)
 	if(!isinhell)
 		if(istype(mover, /mob/dead/observer/rogue))
 			return 0
-		if(istype(mover, /mob/dead/observer/rogue/arcaneeye))
-			return 1
 	return 1
 
 /*
@@ -881,8 +875,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		O.updateghostimages()
 
 /mob/dead/observer/proc/horde_respawn()
-	if(istype(src, /mob/dead/observer/rogue/arcaneeye))
-		return
 	var/bt = world.time
 	SEND_SOUND(src, sound('sound/misc/notice (2).ogg'))
 	if(alert(src, "A lich has summoned you to destroy ROGUETOWN!", "Join the Horde", "Yes", "No") == "Yes")

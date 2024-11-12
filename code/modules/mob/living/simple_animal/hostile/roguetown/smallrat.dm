@@ -18,11 +18,11 @@
 
 /obj/item/reagent_containers/food/snacks/smallrat/onbite(mob/living/carbon/human/user)
 	if(loc == user)
-		if(user.mind && user.mind.has_antag_datum(/datum/antagonist/vampirelord))
+		if(user.mind && user.mind.has_antag_datum(/datum/antagonist/vampire))
 			if(dead)
 				to_chat(user, span_warning("It's dead."))
 				return
-			var/datum/antagonist/vampirelord/VD = user.mind.has_antag_datum(/datum/antagonist/vampirelord)
+			var/datum/antagonist/vampire/VD = user.mind.has_antag_datum(/datum/antagonist/vampire)
 			if(do_after(user, 30, target = src))
 				user.visible_message(span_warning("[user] drinks from [src]!"),\
 				span_warning("I drink from [src]!"))

@@ -50,7 +50,6 @@ SUBSYSTEM_DEF(mapping)
 #endif
 
 /datum/controller/subsystem/mapping/proc/spawn_random_travel_tiles()
-	spawn_random_travel_transition("vampexit", "vampin", TRAIT_VAMPMANSION, /obj/structure/fluff/traveltile/vampire)
 	spawn_random_travel_transition("banditexit", "banditin", TRAIT_BANDITCAMP, /obj/structure/fluff/traveltile/bandit)
 
 /datum/controller/subsystem/mapping/proc/spawn_random_travel_transition(travel_id, travel_goes_to_id, required_trait, path)

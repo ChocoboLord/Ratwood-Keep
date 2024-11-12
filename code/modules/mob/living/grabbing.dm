@@ -537,8 +537,8 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 
 	if(user.mind && C.mind)
-		var/datum/antagonist/vampirelord/VDrinker = user.mind.has_antag_datum(/datum/antagonist/vampirelord)
-		var/datum/antagonist/vampirelord/VVictim = C.mind.has_antag_datum(/datum/antagonist/vampirelord)
+		var/datum/antagonist/vampire/VDrinker = user.mind.has_antag_datum(/datum/antagonist/vampire)
+		var/datum/antagonist/vampire/VVictim = C.mind.has_antag_datum(/datum/antagonist/vampire)
 		var/zomwerewolf = C.mind.has_antag_datum(/datum/antagonist/werewolf)
 		if(!zomwerewolf)
 			if(C.stat != DEAD)
@@ -557,11 +557,11 @@
 						var/mob/living/carbon/human/H = C
 						if(H.virginity)
 							to_chat(user, "<span class='love'>Virgin blood, delicious!</span>")
-							if(VDrinker.isspawn)
+							if(VDrinker.is_lesser)
 								VDrinker.handle_vitae(750, 750)
 							else
 								VDrinker.handle_vitae(750)
-					if(VDrinker.isspawn)
+					if(VDrinker.is_lesser)
 						VDrinker.handle_vitae(500, 500)
 					else
 						VDrinker.handle_vitae(500)
@@ -576,10 +576,10 @@
 			addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, vomit), 0, TRUE), rand(8 SECONDS, 15 SECONDS))
 	else
 		if(user.mind)
-			if(user.mind.has_antag_datum(/datum/antagonist/vampirelord))
-				var/datum/antagonist/vampirelord/VDrinker = user.mind.has_antag_datum(/datum/antagonist/vampirelord)
+			if(user.mind.has_antag_datum(/datum/antagonist/vampire))
+				var/datum/antagonist/vampire/VDrinker = user.mind.has_antag_datum(/datum/antagonist/vampire)
 				C.blood_volume = max(C.blood_volume-45, 0)
-				if(VDrinker.isspawn)
+				if(VDrinker.is_lesser)
 					VDrinker.handle_vitae(300, 300)
 				else
 					VDrinker.handle_vitae(300)
@@ -595,16 +595,15 @@
 	log_combat(user, C, "drank blood from ")
 
 	if(ishuman(C) && C.mind)
-		var/datum/antagonist/vampirelord/VDrinker = user.mind.has_antag_datum(/datum/antagonist/vampirelord)
+		var/datum/antagonist/vampire/VDrinker = user.mind.has_antag_datum(/datum/antagonist/vampire)
 		if(C.blood_volume <= BLOOD_VOLUME_SURVIVE)
-			if(!VDrinker.isspawn)
-				switch(alert("Would you like to sire a new spawn?",,"Yes","No"))
+			if(!VDrinker.is_lesser)
+				switch(alert("Would you like to sire a new childe?",,"Yes","No"))
 					if("Yes")
 						user.visible_message("[user] begins to infuse dark magic into [C]")
 						if(do_after(user, 30))
-							C.visible_message("[C] rises as a new spawn!")
-							var/datum/antagonist/vampirelord/lesser/new_antag = new /datum/antagonist/vampirelord/lesser()
-							new_antag.sired = TRUE
+							C.visible_message("[C] rises as a vampyre!")
+							var/datum/antagonist/vampire/lesser/new_antag = new /datum/antagonist/vampire/lesser()
 							C.mind.add_antag_datum(new_antag)
 							sleep(20)
 							C.fully_heal()
