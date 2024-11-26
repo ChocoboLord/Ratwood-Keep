@@ -61,7 +61,7 @@ GLOBAL_LIST_INIT(nonhuman_positions, list(
 
 GLOBAL_LIST_INIT(noble_positions, list(
 	"Duke",
-	"Duchess Consort",
+	"Duchess",
 	"Heir",
 	"Retinue Captain",
 	"Royal Marshal",
@@ -71,7 +71,7 @@ GLOBAL_LIST_INIT(noble_positions, list(
 ))
 
 GLOBAL_LIST_INIT(courtier_positions, list(
-	"Court Magician",
+	"Court Magos",
 	"Court Physician",
 	"Jester",
 	"Head Butler",
@@ -134,6 +134,7 @@ GLOBAL_LIST_INIT(peasant_positions, list(
 
 GLOBAL_LIST_INIT(mercenary_positions, list(
 	"Mercenary",
+	"Guild Clerk",
 ))
 
 GLOBAL_LIST_INIT(youngfolk_positions, list(

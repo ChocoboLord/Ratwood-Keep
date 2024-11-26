@@ -40,6 +40,15 @@
 	salvage_amount = 1
 	salvage_result = /obj/item/natural/hide/cured
 
+/obj/item/clothing/head/roguetown/roguehood/reinforced
+	name = "hood"
+	body_parts_covered = HEAD|HAIR|EARS|NOSE
+	armor = list("blunt" = 47, "slash" = 27, "stab" = 37, "bullet" = 20, "laser" = 0,"energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 0, "acid" = 0)
+	prevent_crits = list(BCLASS_BLUNT, BCLASS_TWIST)
+	max_integrity = 200
+	blocksound = SOFTHIT
+	sewrepair = TRUE
+
 /obj/item/clothing/head/roguetown/roguehood/shalal
 	name = "keffiyeh"
 	desc = "A protective covering worn by those native to the desert."
@@ -317,18 +326,6 @@
 	item_state = "chap_alt"
 	color = "#cf99e3"
 
-/obj/item/clothing/head/roguetown/chaperon/marshal
-	name = "chaperon hat"
-	desc = "A fancy hat worn by nobles."
-	icon_state = "chap_alt"
-	item_state = "chap_alt"
-	color = "#C0392B"
-
-/obj/item/clothing/head/roguetown/chaperon/councillor
-	icon_state = "chap_alt"
-	item_state = "chap_alt"
-	color = "#7dcea0"
-
 /obj/item/clothing/head/roguetown/chef
 	name = "chef's hat"
 	desc = "A hat which signifies one as well versed in the arts of cooking."
@@ -372,10 +369,11 @@
 	sewrepair = FALSE
 
 /obj/item/clothing/head/roguetown/crown/serpcrown
+	visual_replacement = /obj/item/clothing/head/roguetown/crown/fakecrown
 
 /obj/item/clothing/head/roguetown/crown/serpcrown/Initialize()
 	. = ..()
-	SSroguemachine.crown = src
+	visual_replacement = /obj/item/clothing/head/roguetown/crown/fakecrown
 
 /obj/item/clothing/head/roguetown/crown/serpcrown/proc/anti_stall()
 	src.visible_message(span_warning("The Crown of Rockhill crumbles to dust, the ashes spiriting away in the direction of the Keep."))

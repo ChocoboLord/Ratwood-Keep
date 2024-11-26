@@ -6,18 +6,11 @@
 /obj/machinery/computer/emergency_shuttle
 	name = "emergency shuttle console"
 	desc = ""
-	icon_screen = "shuttle"
-	icon_keyboard = "tech_key"
 	ui_x = 400
 	ui_y = 400
 
 	var/auth_need = 3
 	var/list/authorized = list()
-
-/obj/machinery/computer/emergency_shuttle/attackby(obj/item/I, mob/user,params)
-	if(istype(I, /obj/item/card/id))
-		say("Please equip your ID card into your ID slot to authenticate.")
-	. = ..()
 
 /obj/machinery/computer/emergency_shuttle/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.human_adjacent_state)
 
@@ -33,15 +26,6 @@
 	data["engines_started"] = ENGINES_STARTED
 	data["authorizations_remaining"] = max((auth_need - authorized.len), 0)
 	var/list/A = list()
-	for(var/i in authorized)
-		var/obj/item/card/id/ID = i
-		var/name = ID.registered_name
-		var/job = ID.assignment
-
-		if(obj_flags & EMAGGED)
-			name = Gibberish(name)
-			job = Gibberish(job)
-		A += list(list("name" = name, "job" = job))
 	data["authorizations"] = A
 
 	data["enabled"] = (IS_DOCKED && !ENGINES_STARTED)
@@ -55,62 +39,7 @@
 		return
 	if(!IS_DOCKED) // shuttle computer only has uses when onstation
 		return
-
-	var/mob/user = usr
-	. = FALSE
-
-	var/obj/item/card/id/ID = user.get_idcard(TRUE)
-
-	if(!ID)
-		to_chat(user, span_warning("I don't have an ID."))
-		return
-
-	if(!(ACCESS_HEADS in ID.access))
-		to_chat(user, span_warning("The access level of your card is not high enough."))
-		return
-
-	var/old_len = authorized.len
-
-	switch(action)
-		if("authorize")
-			. = authorize(user)
-
-		if("repeal")
-			authorized -= ID
-
-		if("abort")
-			if(authorized.len)
-				// Abort. The action for when heads are fighting over whether
-				// to launch early.
-				authorized.Cut()
-				. = TRUE
-
-	if((old_len != authorized.len) && !ENGINES_STARTED)
-		var/alert = (authorized.len > old_len)
-		var/repeal = (authorized.len < old_len)
-		var/remaining = max(0, auth_need - authorized.len)
-		if(authorized.len && remaining)
-			minor_announce("[remaining] authorizations needed until shuttle is launched early", null, alert)
-		if(repeal)
-			minor_announce("Early launch authorization revoked, [remaining] authorizations needed")
-
-/obj/machinery/computer/emergency_shuttle/proc/authorize(mob/user, source)
-	var/obj/item/card/id/ID = user.get_idcard(TRUE)
-
-	if(ID in authorized)
-		return FALSE
-	for(var/i in authorized)
-		var/obj/item/card/id/other = i
-		if(other.registered_name == ID.registered_name)
-			return FALSE // No using IDs with the same name
-
-	authorized += ID
-
-	message_admins("[ADMIN_LOOKUPFLW(user)] has authorized early shuttle launch")
-	log_game("[key_name(user)] has authorized early shuttle launch in [COORD(src)]")
-	// Now check if we're on our way
-	. = TRUE
-	process()
+	return FALSE
 
 /obj/machinery/computer/emergency_shuttle/process()
 	// Launch check is in process in case auth_need changes for some reason
@@ -150,30 +79,7 @@
 
 	ENABLE_BITFIELD(obj_flags, EMAGGED)
 	SSshuttle.emergency.movement_force = list("KNOCKDOWN" = 60, "THROW" = 20)//YOUR PUNY SEATBELTS can SAVE YOU NOW, MORTAL
-	var/datum/species/S = new
-	for(var/i in 1 to 10)
-		// the shuttle system doesn't know who these people are, but they
-		// must be important, surely
-		var/obj/item/card/id/ID = new(src)
-		var/datum/job/J = pick(SSjob.occupations)
-		ID.registered_name = S.random_name(pick(MALE, FEMALE))
-		ID.assignment = J.title
-
-		authorized += ID
-
 	process()
-
-/obj/machinery/computer/emergency_shuttle/Destroy()
-	// Our fake IDs that the emag generated are just there for colour
-	// They're not supposed to be accessible
-
-	for(var/obj/item/card/id/ID in src)
-		qdel(ID)
-	if(authorized && authorized.len)
-		authorized.Cut()
-	authorized = null
-
-	. = ..()
 
 /obj/docking_port/mobile/emergency
 	name = "emergency shuttle"
@@ -256,8 +162,6 @@
 	for(var/mob/living/player in GLOB.player_list)
 		if(player.mind)
 			if(player.stat != DEAD)
-				if(issilicon(player)) //Borgs are technically dead anyways
-					continue
 				if(isanimal(player)) //animals don't count
 					continue
 				if(isbrain(player)) //also technically dead
@@ -464,13 +368,8 @@
 	var/obj/machinery/computer/shuttle/C = getControlConsole()
 	if(!istype(C, /obj/machinery/computer/shuttle/pod))
 		return ..()
-	if(GLOB.security_level >= SEC_LEVEL_RED || (C && (C.obj_flags & EMAGGED)))
-		if(launch_status == UNLAUNCHED)
-			launch_status = EARLY_LAUNCHED
-			return ..()
-	else
-		to_chat(usr, span_warning("Escape pods will only launch during \"Code Red\" security alert."))
-		return TRUE
+	to_chat(usr, span_warning("Escape pods will only launch during \"Code Red\" security alert."))
+	return TRUE
 
 /obj/docking_port/mobile/pod/cancel()
 	return
@@ -565,7 +464,6 @@
 	new /obj/item/tank/internals/oxygen/red(src)
 	new /obj/item/pickaxe/emergency(src)
 	new /obj/item/pickaxe/emergency(src)
-	new /obj/item/survivalcapsule(src)
 	new /obj/item/storage/toolbox/emergency(src)
 
 /obj/item/storage/pod/attackby(obj/item/W, mob/user, params)
@@ -589,8 +487,6 @@
 /obj/item/storage/pod/can_interact(mob/user)
 	if(!..())
 		return FALSE
-	if(GLOB.security_level >= SEC_LEVEL_RED || unlocked)
-		return TRUE
 	to_chat(user, "The storage unit will only unlock during a Red or Delta security alert.")
 
 /obj/docking_port/mobile/emergency/backup
